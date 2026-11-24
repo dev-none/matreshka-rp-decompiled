@@ -1,71 +1,71 @@
 # Matreshka RP - Decompiled Client & C++17 Base (`build 2587` / `v6.4.2`)
 
-Реконструированный и декомпилированный клиент **Matreshka RP** (`com.matreshkarp.game`, `versionCode = 2587`, `versionName = 6.4.2-16.11-19.41`) без бинарных артефактов (`.apk`, `.so`, `.dex`, `.jar`, `.bin`, `.exe`). Исследовательский проект: дампы, документация и модульная база `cpp/` + `android/` для переиспользования. **Not affiliated with the game developers.**
+Reconstructed and decompiled **Matreshka RP** Android client (`com.matreshkarp.game`, `versionCode = 2587`, `versionName = 6.4.2-16.11-19.41`) without binary artifacts (`.apk`, `.so`, `.dex`, `.jar`, `.bin`, `.exe`). Structured as a readable reverse-engineering reference and modular C++17 / Android foundation for custom projects. **Not affiliated with the game developers.**
 
-> **Важно об архитектуре клиента**
-> - **Серверный игровой мод** (логика мира, экономика, БД игроков, серверные скрипты) внутри APK отсутствует и работает на стороне сервера.
-> - **Клиентский игровой мод, лаунчер и весь UI** (`47` модулей ассетов под `assets_mt/*`) написаны на **Dart / Flutter 3.47.9** (`package:client_core/`) и скомпилированы в AOT-снапшот `libapp.so`. Контракты `MethodChannel`, gRPC API и Dart FFI-интерфейс извлечены в [`docs/`](docs/).
-> - **Нативное ядро `libmatreshka.so`** (GTA:SA Android + WebRTC APM + SA-MP/RakNet + JNI-мост) накрыто кастомным двухэтапным упаковщиком и перенаправлением вызовов (`mmap` + `0xe51ff004` / `0xe59fe000` трамплины + XOR-шифрование строк). Код распакован эмуляцией `.init_array[0]` с восстановлением прямых переходов и импортов перед анализом в **Ghidra 12.1.2**.
+> **Client Architecture Notes**
+> - **Server-side gamemode logic** (world state, economy, player databases, server scripts) is not present in the client APK and executes server-side.
+> - **Client-side gamemode modules, launcher, and UI** (`47` asset namespaces under `assets_mt/*`) are written in **Dart / Flutter 3.47.9** (`package:client_core/`) and AOT-compiled into `libapp.so`. Extracted `MethodChannel` contracts, `73` gRPC routes, and `38` Dart FFI `native*` identifiers are documented in [`docs/`](docs/).
+> - **Native engine `libmatreshka.so`** (GTA:SA Android + WebRTC APM + SA-MP/RakNet + JNI bridge) is protected by a custom two-stage packer and indirect call trampolines (`mmap` regions + `0xe51ff004` / `0xe59fe000` stubs + inline XOR strings). It was unpacked via `.init_array[0]` emulation, patched back to direct ARM/Thumb branches with resolved heap/GOT imports, and decompiled using **Ghidra 12.1.2**.
 
 ---
 
-## Структура репозитория
+## Repository Layout
 
 ```text
 .
 ├── android/
 │   ├── settings.gradle.kts / build.gradle.kts / gradle.properties
 │   ├── app/
-│   │   ├── build.gradle.kts                  # Gradle-конфигурация + подключение CMake (cpp/)
+│   │   ├── build.gradle.kts                  # Gradle configuration + CMake link to cpp/
 │   │   └── src/main/
 │   │       ├── AndroidManifest.xml
-│   │       ├── res/                          # XML-конфиги, strings.xml, сертификаты raw/, стили
-│   │       ├── assets/                       # assetPackManifest.json, Flutter JSON-манифесты
+│   │       ├── res/                          # XML configs, strings.xml, raw/ certs, styles
+│   │       ├── assets/                       # assetPackManifest.json, Flutter JSON manifests
 │   │       └── java/
-│   │           ├── com/matreshkarp/          # MainActivity, Flutter-каналы, Sentry, Room keyboard DB (30 файлов)
-│   │           └── com/p003native/           # JNI-обёртки Main и libLoader (в Dalvik: com.native.*)
-│   └── decompiled_packages/                  # Полная JADX-декомпиляция сторонних SDK (27,091 файл)
-├── cpp/                                      # Чистая переносимая база на C++17 (CMake / g++)
+│   │           ├── com/matreshkarp/          # MainActivity, Flutter channels, Sentry, Room keyboard DB (30 files)
+│   │           └── com/p003native/           # Main and libLoader JNI wrappers (Dalvik: com.native.*)
+│   └── decompiled_packages/                  # Full JADX decompilation of 3rd-party SDKs (27,091 files)
+├── cpp/                                      # Clean portable C++17 codebase (CMake / g++)
 │   ├── CMakeLists.txt
 │   ├── include/matreshka/
-│   │   ├── protocol/bitstream.hpp            # RakNet-совместимый BitStream + FFI nativeBitStream*
-│   │   ├── network/rpc_client.hpp            # Диспетчер nativeSendRPC / nativeSendAuthToken
-│   │   ├── security/integrity.hpp            # SHA-256, CRC32, CRC64, XOR-декодер, API-заголовки
-│   │   ├── bootstrap/cdn_client.hpp          # Очередь bootstrap/CDN/API и сборка URL загрузок
-│   │   └── jni/native_bridge.hpp             # Мост com.native.Main / RenderQueue / libLoader
-│   ├── src/                                  # Реализация всех модулей C++17
-│   └── tests/smoke_test.cpp                  # Автономный smoke-тест
-├── native_decompiled/                        # Прямой C / pseudo-C вывод из Ghidra 12.1.2
-│   ├── libmatreshka/                         # 10,668 / 10,683 функций (chunks/), jni_and_entry.c, string_xref_core.c, imports_546.json
-│   ├── libsigner/                            # Adjust SDK Native Signer (424 функции)
-│   └── libasync_zip/                         # miniz + kuba/zip FFI (297 функций)
+│   │   ├── protocol/bitstream.hpp            # RakNet-compatible BitStream + nativeBitStream* FFI
+│   │   ├── network/rpc_client.hpp            # nativeSendRPC / nativeSendAuthToken dispatcher
+│   │   ├── security/integrity.hpp            # SHA-256, CRC32, CRC64, XOR decoder, API header builder
+│   │   ├── bootstrap/cdn_client.hpp          # Bootstrap/CDN/API queue & download URL builder
+│   │   └── jni/native_bridge.hpp             # com.native.Main / RenderQueue / libLoader runtime bridge
+│   ├── src/                                  # C++17 implementations
+│   └── tests/smoke_test.cpp                  # Standalone smoke test suite
+├── native_decompiled/                        # Raw C / pseudo-C exports from Ghidra 12.1.2
+│   ├── libmatreshka/                         # 10,668 / 10,683 functions (chunks/), jni_and_entry.c, string_xref_core.c, imports_546.json
+│   ├── libsigner/                            # Adjust SDK Native Signer (424 functions)
+│   └── libasync_zip/                         # miniz + kuba/zip FFI (297 functions)
 └── docs/
-    ├── ENDPOINTS_AND_HASHES.md               # Все домены, эндпоинты подгрузки файлов и хеш-запросы
-    └── GAMEMODE_MODULES_AND_RPC.md           # Модули игрового мода, 73 gRPC-метода, Dart FFI и MethodChannel
+    ├── ENDPOINTS_AND_HASHES.md               # Domains, asset download endpoints, and hash verification details
+    └── GAMEMODE_MODULES_AND_RPC.md           # Client gamemode modules, 73 gRPC routes, Dart FFI & MethodChannels
 ```
 
 ---
 
-## Домены, эндпоинты и проверка хешей (кратко)
+## Domains, Download Endpoints & Integrity Checks (Summary)
 
-Подробная спецификация со всеми извлечёнными строками, SQL-схемами и путями — в [`docs/ENDPOINTS_AND_HASHES.md`](docs/ENDPOINTS_AND_HASHES.md).
+Full extracted string tables, SQL schemas, and URL paths are documented in [`docs/ENDPOINTS_AND_HASHES.md`](docs/ENDPOINTS_AND_HASHES.md).
 
-| Назначение | Хосты / Эндпоинты / Заголовки |
+| Component | Hosts / Endpoints / Headers |
 | :--- | :--- |
-| **Bootstrap (конфиг и ветки)** | `bootstrap-cf.matreshka.gg`, `bootstrap-gc.matreshka.gg`, `bootstrap-yc.matreshka.gg` (`/bootstrap.json`, `/bootstrap-dev.json`, `/bootstrap-test.json`, `/branches-dev.json`) |
-| **CDN (файлы билда и кэш)** | `cdn-cf.matreshka.gg`, `cdn-ec.matreshka.gg`, `cdn-gc.matreshka.gg` (`cdn:/matrp_mobile/dev/builds/<build_id>/files_list.json`, `files_list_lite.json`, `manifest.json`, `archive_metadata.json`, `audio_archive_metadata.json`, `translations`, `cdn:/music/`, `cdn:/video/`, `matreshka_client.apk`) |
+| **Bootstrap (Config & Branches)** | `bootstrap-cf.matreshka.gg`, `bootstrap-gc.matreshka.gg`, `bootstrap-yc.matreshka.gg` (`/bootstrap.json`, `/bootstrap-dev.json`, `/bootstrap-test.json`, `/branches-dev.json`) |
+| **CDN (Builds & Assets)** | `cdn-cf.matreshka.gg`, `cdn-ec.matreshka.gg`, `cdn-gc.matreshka.gg` (`cdn:/matrp_mobile/dev/builds/<build_id>/files_list.json`, `files_list_lite.json`, `manifest.json`, `archive_metadata.json`, `audio_archive_metadata.json`, `translations`, `cdn:/music/`, `cdn:/video/`, `matreshka_client.apk`) |
 | **Global / Regional API** | `api-1.matreshka.gg`, `api-2.matreshka.gg`, `api-3.matreshka.gg` (gRPC `/auth.v1.AuthService/*`, `/shop.ShopService/*`, `/analytics.AnalyticsService/SendBatch`) |
-| **Auth / KB / Аналитика** | `https://id.matreshka.gg/auth/apple`, `https://kb.matrp.ru/`, `testanalytics.matrp.ru`, `matrp.ru` (`/promo`), `matrp.go.link`, `0CDEB-0FA38.api.pushwoosh.com`, `api.wavesend.ru` |
-| **Хеш-заголовки API** | `X-API-KEY`, `client-hash`, `client-key`, `x-client-version`, `user-device-hash`, `client-platform`, `client-locale`, `client-region`, `user-branch`, `x-session-id` + нативная подпись Adjust (`libsigner.so` `nSign`) |
-| **Проверка файлов** | `checkFileHash`, `fileHash`, `bundlehash` (`bundle-hash-match`, `raw-zip-hash-match`, `extracted-cache-hash-match`), `SHA-256`, `CRC32`, `CRC64`, `ETag` / `if-none-match`, SQLite-таблицы `hash_storage` и `saved_downloads` |
+| **Auth / KB / Analytics** | `https://id.matreshka.gg/auth/apple`, `https://kb.matrp.ru/`, `testanalytics.matrp.ru`, `matrp.ru` (`/promo`), `matrp.go.link`, `0CDEB-0FA38.api.pushwoosh.com`, `api.wavesend.ru` |
+| **API Auth / Hash Headers** | `X-API-KEY`, `client-hash`, `client-key`, `x-client-version`, `user-device-hash`, `client-platform`, `client-locale`, `client-region`, `user-branch`, `x-session-id` + native Adjust signing (`libsigner.so` `nSign`) |
+| **File Validation** | `checkFileHash`, `fileHash`, `bundlehash` (`bundle-hash-match`, `raw-zip-hash-match`, `extracted-cache-hash-match`), `SHA-256`, `CRC32`, `CRC64`, `ETag` / `if-none-match`, SQLite tables `hash_storage` & `saved_downloads` |
 
 ---
 
-## Быстрый старт и сборка
+## Quick Start & Build
 
-### 1. Сборка C++17 базы и запуск тестов
+### 1. Build C++17 Base & Run Smoke Tests
 
-Через **CMake**:
+Using **CMake**:
 
 ```bash
 cmake -S cpp -B build -DCMAKE_BUILD_TYPE=Release
@@ -73,7 +73,7 @@ cmake --build build
 ./build/matreshka_smoke_test
 ```
 
-Или напрямую через **g++**:
+Or directly with **g++**:
 
 ```bash
 g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror -Icpp/include \
@@ -86,17 +86,17 @@ g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror -Icpp/include \
   -o build/matreshka_smoke_test
 ```
 
-Проверено локально компилятором MinGW `g++` (C++17, `-Werror`): сборка и все проверки `smoke_test.cpp` (`BitStream`, `RpcClient`, `SHA-256`, `CRC32`, XOR-декодер, `BuildApiHeaders`, `VerifyBundleFileBuffer`, `CdnClient`, `NativeEngineBridge`) проходят без предупреждений и ошибок.
+Verified locally with MinGW `g++` (C++17, `-Werror`): compiles cleanly and passes all checks in `smoke_test.cpp` (`BitStream`, `RpcClient`, `SHA-256`, `CRC32`, XOR decoder, `BuildApiHeaders`, `VerifyBundleFileBuffer`, `CdnClient`, `NativeEngineBridge`).
 
-### 2. Android-проект (`android/`)
+### 2. Android Project (`android/`)
 
-Каталог [`android/`](android/) содержит декомпилированный `MainActivity` (Flutter-каналы `gameChannel`, `device_info`, `flavorChannel`, `old_auth`, `old_keyboard`, `aspectRatioChannel`, `voice/audio`), Room БД клавиатуры, ресурсы и манифест для `minSdk = 26`, `targetSdk = 36`, а также подключённый `CMakeLists.txt` для нативной части `libmatreshka`.
+[`android/`](android/) contains the decompiled `MainActivity` (`gameChannel`, `device_info`, `flavorChannel`, `old_auth`, `old_keyboard`, `aspectRatioChannel`, `voice/audio`), Room keyboard command/bind DB, resources, `AndroidManifest.xml` (`minSdk = 26`, `targetSdk = 36`), and `build.gradle.kts` wired to `cpp/CMakeLists.txt`.
 
-> **Примечание по пакету `com.p003native`:** в Dalvik/Kotlin исходный пакет называется `com.native` (`Java_com_native_Main_*`, `Java_com_native_libLoader_*`), однако в Java `native` — зарезервированное ключевое слово, поэтому JADX экспортировал его как `com.p003native`. При переходе на Kotlin используйте ``package com.`native` `` или согласуйте JNI-имена под своё имя пакета.
+> **Note on `com.p003native`:** in Dalvik/Kotlin bytecode the original package is `com.native` (`Java_com_native_Main_*`, `Java_com_native_libLoader_*`). Because `native` is a reserved keyword in Java, JADX exported it under `com.p003native`. In Kotlin projects, use ``package com.`native` `` or adjust the JNI symbol prefix to match your package name.
 
 ---
 
-## Документация
+## Documentation
 
-- [`docs/ENDPOINTS_AND_HASHES.md`](docs/ENDPOINTS_AND_HASHES.md) - полный список доменов, эндпоинтов подгрузки, SQL-кэшей и проверок целостности.
-- [`docs/GAMEMODE_MODULES_AND_RPC.md`](docs/GAMEMODE_MODULES_AND_RPC.md) - карта всех `47` модулей игрового UI/мода, `73` gRPC-маршрутов, Dart FFI-символов и `MethodChannel`-контрактов.
+- [`docs/ENDPOINTS_AND_HASHES.md`](docs/ENDPOINTS_AND_HASHES.md) - full list of domains, extra-file download endpoints, SQLite download/hash schemas, and client integrity checks.
+- [`docs/GAMEMODE_MODULES_AND_RPC.md`](docs/GAMEMODE_MODULES_AND_RPC.md) - inventory of `47` UI/gamemode asset namespaces, `73` gRPC routes, Dart FFI symbols, and Flutter `MethodChannel` contracts.
