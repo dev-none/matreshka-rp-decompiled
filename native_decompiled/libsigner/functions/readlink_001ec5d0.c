@@ -1,0 +1,15 @@
+// Function: readlink
+// Entry: 001ec5d0
+
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+ssize_t readlink(char *__path,char *__buf,size_t __len)
+
+{
+  ssize_t sVar1;
+  
+  sVar1 = (*(code *)PTR_readlink_001f1120)();
+  return sVar1;
+}
+
+

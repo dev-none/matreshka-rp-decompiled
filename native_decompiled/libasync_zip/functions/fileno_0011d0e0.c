@@ -1,0 +1,14 @@
+// Function: fileno
+// Entry: 0011d0e0
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+int fileno(FILE *__stream)
+
+{
+                    /* WARNING: Bad instruction - Truncating control flow here */
+  halt_baddata();
+}
+
+
