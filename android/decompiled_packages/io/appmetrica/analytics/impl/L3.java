@@ -1,0 +1,15 @@
+package io.appmetrica.analytics.impl;
+
+import java.util.List;
+
+/* JADX INFO: loaded from: classes7.dex */
+public final class L3 implements Mm {
+    public final A3 a(C2613z3 c2613z3, List<C2613z3> list) {
+        return new A3(c2613z3, list);
+    }
+
+    @Override // kotlin.jvm.functions.Function2
+    public final Object invoke(Object obj, Object obj2) {
+        return new A3((C2613z3) obj, (List) obj2);
+    }
+}

@@ -1,0 +1,13 @@
+package ru.rustore.sdk.review.errors;
+
+import kotlin.Metadata;
+import ru.rustore.sdk.core.exception.RuStoreException;
+
+/* JADX INFO: compiled from: r8-map-id-381588c9714ce4cd7b266fd2cfd03df7665598235e0d80e8276ada3382f3292f */
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0018\u00002\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0002¨\u0006\u0003"}, d2 = {"Lru/rustore/sdk/review/errors/RuStoreInvalidReviewInfo;", "Lru/rustore/sdk/core/exception/RuStoreException;", "()V", "sdk-public-review_release"}, k = 1, mv = {1, 8, 0}, xi = 48)
+public final class RuStoreInvalidReviewInfo extends RuStoreException {
+    public RuStoreInvalidReviewInfo() {
+        super("Review can't be started with the passed ReviewInfo instance");
+    }
+}

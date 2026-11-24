@@ -1,0 +1,80 @@
+package com.my.target;
+
+import android.content.Context;
+import android.view.View;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+/* JADX INFO: loaded from: classes6.dex */
+public class a1 extends LinearLayoutManager {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final int f4520a;
+    public int b;
+    public a c;
+    public int d;
+    public int e;
+    public int f;
+    public int g;
+
+    public interface a {
+        void a();
+    }
+
+    public a1(Context context) {
+        super(context, 0, false);
+        this.f4520a = kb.e(context).b(4);
+    }
+
+    public void a(a aVar) {
+        this.c = aVar;
+    }
+
+    @Override // androidx.recyclerview.widget.RecyclerView.LayoutManager
+    public void measureChildWithMargins(View view, int i, int i2) {
+        int height = getHeight();
+        int width = getWidth();
+        if (height != this.g || width != this.f || this.d <= 0 || this.e <= 0) {
+            view.measure(View.MeasureSpec.makeMeasureSpec(getWidth(), Integer.MIN_VALUE), View.MeasureSpec.makeMeasureSpec(getHeight(), Integer.MIN_VALUE));
+            float width2 = getWidth() / view.getMeasuredWidth();
+            if (width2 > 1.0f) {
+                this.d = (int) (((double) width) / (Math.floor(width2) + 0.5d));
+            } else {
+                this.d = (int) (width / 1.5f);
+            }
+            this.e = height;
+            this.f = width;
+            this.g = height;
+        }
+        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
+        if (view != getChildAt(0)) {
+            layoutParams.leftMargin = kb.a(this.b / 2, view.getContext());
+        }
+        if (view != getChildAt(getChildCount())) {
+            layoutParams.rightMargin = kb.a(this.b / 2, view.getContext());
+        }
+        int childMeasureSpec = LinearLayoutManager.getChildMeasureSpec(width, getWidthMode(), 0, this.d, canScrollHorizontally());
+        int heightMode = getHeightMode();
+        int i3 = this.f4520a;
+        view.measure(childMeasureSpec, LinearLayoutManager.getChildMeasureSpec(height, heightMode, i3, height - (i3 * 2), canScrollVertically()));
+    }
+
+    @Override // androidx.recyclerview.widget.LinearLayoutManager, androidx.recyclerview.widget.RecyclerView.LayoutManager
+    public void onLayoutCompleted(RecyclerView.State state) {
+        super.onLayoutCompleted(state);
+        a aVar = this.c;
+        if (aVar != null) {
+            aVar.a();
+        }
+    }
+
+    public void a(int i) {
+        this.b = i;
+    }
+
+    public boolean a(View view) {
+        int iFindFirstCompletelyVisibleItemPosition = findFirstCompletelyVisibleItemPosition();
+        int position = getPosition(view);
+        return iFindFirstCompletelyVisibleItemPosition <= position && position <= findLastCompletelyVisibleItemPosition();
+    }
+}

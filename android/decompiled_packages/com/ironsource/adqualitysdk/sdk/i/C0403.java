@@ -1,0 +1,23 @@
+package com.ironsource.adqualitysdk.sdk.i;
+
+import com.google.android.libraries.ads.mobile.sdk.rewardedinterstitial.RewardedInterstitialAd;
+import java.util.ArrayList;
+
+/* JADX INFO: renamed from: com.ironsource.adqualitysdk.sdk.i.Ӵ, reason: contains not printable characters */
+/* JADX INFO: loaded from: classes6.dex */
+public final class C0403 implements InterfaceC0350 {
+
+    /* JADX INFO: renamed from: ﾒ, reason: contains not printable characters */
+    public final /* synthetic */ C0370 f1498;
+
+    public C0403(C0370 c0370) {
+        this.f1498 = c0370;
+    }
+
+    @Override // com.ironsource.adqualitysdk.sdk.i.InterfaceC0350
+    /* JADX INFO: renamed from: ﾒ */
+    public final Object mo8317(ArrayList arrayList, C0566 c0566) {
+        this.f1498.getClass();
+        return ((RewardedInterstitialAd) AbstractC0912.m8788(arrayList, 0, RewardedInterstitialAd.class)).getAdMetadata();
+    }
+}

@@ -1,0 +1,9 @@
+package io.appmetrica.analytics.impl;
+
+/* JADX INFO: loaded from: classes7.dex */
+public final class U6 implements Og {
+    @Override // io.appmetrica.analytics.impl.Og
+    public final String a(String str) {
+        return "/appmetrica/analytics/db/" + str;
+    }
+}

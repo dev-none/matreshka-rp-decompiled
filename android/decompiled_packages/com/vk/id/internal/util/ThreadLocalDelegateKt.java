@@ -1,0 +1,16 @@
+package com.vk.id.internal.util;
+
+import androidx.exifinterface.media.ExifInterface;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.internal.Intrinsics;
+
+/* JADX INFO: compiled from: ThreadLocalDelegate.kt */
+/* JADX INFO: loaded from: classes6.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\u001a\"\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u00022\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0004H\u0000¨\u0006\u0005"}, d2 = {"threadLocal", "Lcom/vk/id/internal/util/ThreadLocalDelegate;", ExifInterface.GPS_DIRECTION_TRUE, "factory", "Lkotlin/Function0;", "vkid_release"}, k = 2, mv = {2, 0, 0}, xi = 48)
+public final class ThreadLocalDelegateKt {
+    public static final <T> ThreadLocalDelegate<T> threadLocal(Function0<? extends T> factory) {
+        Intrinsics.checkNotNullParameter(factory, "factory");
+        return new ThreadLocalDelegateImpl(factory);
+    }
+}

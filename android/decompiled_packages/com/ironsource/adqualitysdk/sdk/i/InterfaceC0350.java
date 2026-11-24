@@ -1,0 +1,10 @@
+package com.ironsource.adqualitysdk.sdk.i;
+
+import java.util.ArrayList;
+
+/* JADX INFO: renamed from: com.ironsource.adqualitysdk.sdk.i.ϯ, reason: contains not printable characters */
+/* JADX INFO: loaded from: classes6.dex */
+public interface InterfaceC0350 {
+    /* JADX INFO: renamed from: ﾒ */
+    Object mo8317(ArrayList arrayList, C0566 c0566);
+}

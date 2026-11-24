@@ -1,0 +1,25 @@
+package com.ironsource.adqualitysdk.sdk.i;
+
+import com.hyprmx.android.sdk.model.PreloadedVastData;
+import java.util.ArrayList;
+
+/* JADX INFO: renamed from: com.ironsource.adqualitysdk.sdk.i.ใ, reason: contains not printable characters */
+/* JADX INFO: loaded from: classes6.dex */
+public final class C0570 implements InterfaceC0350 {
+
+    /* JADX INFO: renamed from: ﾒ, reason: contains not printable characters */
+    public final /* synthetic */ C0559 f2050;
+
+    public C0570(C0559 c0559) {
+        this.f2050 = c0559;
+    }
+
+    @Override // com.ironsource.adqualitysdk.sdk.i.InterfaceC0350
+    /* JADX INFO: renamed from: ﾒ */
+    public final Object mo8317(ArrayList arrayList, C0566 c0566) {
+        C0559 c0559 = this.f2050;
+        PreloadedVastData preloadedVastData = (PreloadedVastData) arrayList.get(0);
+        c0559.getClass();
+        return preloadedVastData.getParameters();
+    }
+}

@@ -1,0 +1,80 @@
+package com.pichillilorenzo.flutter_inappwebview_android.headless_in_app_webview;
+
+import com.pichillilorenzo.flutter_inappwebview_android.types.ChannelDelegateImpl;
+import com.pichillilorenzo.flutter_inappwebview_android.types.Size2D;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.sentry.rrweb.RRWebVideoEvent;
+import java.util.HashMap;
+import java.util.Map;
+
+/* JADX INFO: loaded from: classes6.dex */
+public class HeadlessWebViewChannelDelegate extends ChannelDelegateImpl {
+    private HeadlessInAppWebView headlessWebView;
+
+    public HeadlessWebViewChannelDelegate(HeadlessInAppWebView headlessInAppWebView, MethodChannel methodChannel) {
+        super(methodChannel);
+        this.headlessWebView = headlessInAppWebView;
+    }
+
+    @Override // com.pichillilorenzo.flutter_inappwebview_android.types.ChannelDelegateImpl, com.pichillilorenzo.flutter_inappwebview_android.types.Disposable
+    public void dispose() {
+        super.dispose();
+        this.headlessWebView = null;
+    }
+
+    @Override // com.pichillilorenzo.flutter_inappwebview_android.types.ChannelDelegateImpl, io.flutter.plugin.common.MethodChannel.MethodCallHandler
+    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+        String str = methodCall.method;
+        str.getClass();
+        str.hashCode();
+        switch (str) {
+            case "getSize":
+                HeadlessInAppWebView headlessInAppWebView = this.headlessWebView;
+                if (headlessInAppWebView == null) {
+                    result.success(null);
+                    break;
+                } else {
+                    Size2D size = headlessInAppWebView.getSize();
+                    result.success(size != null ? size.toMap() : null);
+                    break;
+                }
+                break;
+            case "dispose":
+                HeadlessInAppWebView headlessInAppWebView2 = this.headlessWebView;
+                if (headlessInAppWebView2 == null) {
+                    result.success(Boolean.FALSE);
+                    break;
+                } else {
+                    headlessInAppWebView2.dispose();
+                    result.success(Boolean.TRUE);
+                    break;
+                }
+                break;
+            case "setSize":
+                if (this.headlessWebView == null) {
+                    result.success(Boolean.FALSE);
+                    break;
+                } else {
+                    Size2D size2DFromMap = Size2D.fromMap((Map) methodCall.argument(RRWebVideoEvent.JsonKeys.SIZE));
+                    if (size2DFromMap != null) {
+                        this.headlessWebView.setSize(size2DFromMap);
+                    }
+                    result.success(Boolean.TRUE);
+                    break;
+                }
+                break;
+            default:
+                result.notImplemented();
+                break;
+        }
+    }
+
+    public void onWebViewCreated() {
+        MethodChannel channel = getChannel();
+        if (channel == null) {
+            return;
+        }
+        channel.invokeMethod("onWebViewCreated", new HashMap());
+    }
+}
