@@ -1,0 +1,21 @@
+# Build artifacts & binaries (excluded for GitHub hosting)
+*.apk
+*.aab
+*.so
+*.dex
+*.jar
+*.class
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+*.bin
+build/
+cmake-build-*/
+.gradle/
+.idea/
+local.properties
+_analysis/
+jadx_raw/
