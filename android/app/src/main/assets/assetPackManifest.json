@@ -1,0 +1,4 @@
+{
+  "deliveryType": "install-time",
+  "noCompress": ["txt", "dat", "idx", "osw", "cfg", "zon", "ide", "scm", "ifp", "ttf", "ipl", "grp", "ped", "ini", "gxt", "texs", "zip", "fxp", "col", "vgbundle"]
+}
