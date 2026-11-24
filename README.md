@@ -1,4 +1,4 @@
-# Matreshka RP — Decompiled Client & C++17 Base (`build 2587` / `v6.4.2`)
+# Matreshka RP - Decompiled Client & C++17 Base (`build 2587` / `v6.4.2`)
 
 Реконструированный и декомпилированный клиент **Matreshka RP** (`com.matreshkarp.game`, `versionCode = 2587`, `versionName = 6.4.2-16.11-19.41`) без бинарных артефактов (`.apk`, `.so`, `.dex`, `.jar`, `.bin`, `.exe`). Исследовательский проект: дампы, документация и модульная база `cpp/` + `android/` для переиспользования. **Not affiliated with the game developers.**
 
@@ -98,5 +98,5 @@ g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror -Icpp/include \
 
 ## Документация
 
-- [`docs/ENDPOINTS_AND_HASHES.md`](docs/ENDPOINTS_AND_HASHES.md) — полный список доменов, эндпоинтов подгрузки, SQL-кэшей и проверок целостности.
-- [`docs/GAMEMODE_MODULES_AND_RPC.md`](docs/GAMEMODE_MODULES_AND_RPC.md) — карта всех `47` модулей игрового UI/мода, `73` gRPC-маршрутов, Dart FFI-символов и `MethodChannel`-контрактов.
+- [`docs/ENDPOINTS_AND_HASHES.md`](docs/ENDPOINTS_AND_HASHES.md) - полный список доменов, эндпоинтов подгрузки, SQL-кэшей и проверок целостности.
+- [`docs/GAMEMODE_MODULES_AND_RPC.md`](docs/GAMEMODE_MODULES_AND_RPC.md) - карта всех `47` модулей игрового UI/мода, `73` gRPC-маршрутов, Dart FFI-символов и `MethodChannel`-контрактов.
