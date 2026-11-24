@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d новое уведомление</item>
+        <item quantity="few">%d новых уведомления</item>
+        <item quantity="many">%d новых уведомлений</item>
+        <item quantity="other">%d нового уведомления</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_friends">
+        <item quantity="one">%1$d друг</item>
+        <item quantity="few">%1$d друга</item>
+        <item quantity="many">%1$d друзей</item>
+        <item quantity="other">%1$d друзей</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_subscribers">
+        <item quantity="one">%1$s подписчик</item>
+        <item quantity="few">%1$s подписчика</item>
+        <item quantity="many">%1$s подписчиков</item>
+        <item quantity="other">%1$s подписчиков</item>
+    </plurals>
+</resources>

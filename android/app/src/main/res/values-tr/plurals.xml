@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d yeni bildirim</item>
+        <item quantity="other">%d yeni bildirim</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_friends">
+        <item quantity="one">%1$d arkadaş</item>
+        <item quantity="other">%1$d arkadaş</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_subscribers">
+        <item quantity="one">%1$s abone</item>
+        <item quantity="other">%1$s abone</item>
+    </plurals>
+</resources>

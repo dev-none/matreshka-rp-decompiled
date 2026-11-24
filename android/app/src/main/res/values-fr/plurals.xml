@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d nouvelle notification</item>
+        <item quantity="other">%d nouvelles notifications</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_friends">
+        <item quantity="one">%1$d ami</item>
+        <item quantity="many">%1$d amis</item>
+        <item quantity="other">%1$d amis</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_subscribers">
+        <item quantity="one">%1$s abonné</item>
+        <item quantity="many">%1$s abonnés</item>
+        <item quantity="other">%1$s abonnés</item>
+    </plurals>
+</resources>

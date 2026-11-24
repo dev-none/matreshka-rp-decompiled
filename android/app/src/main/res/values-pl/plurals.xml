@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d nowe powiadomienie</item>
+        <item quantity="few">%d nowe powiadomienia</item>
+        <item quantity="many">%d nowych powiadomień</item>
+        <item quantity="other">%d nowego powiadomienia</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_friends">
+        <item quantity="one">%1$d znajomy</item>
+        <item quantity="few">%1$d znajomi</item>
+        <item quantity="many">%1$d znajomych</item>
+        <item quantity="other">%1$d znajomych</item>
+    </plurals>
+    <plurals name="vkid_group_subscription_subscribers">
+        <item quantity="one">%1$s subskrybent</item>
+        <item quantity="few">%1$s subskrybenci</item>
+        <item quantity="many">%1$s subskrybentów</item>
+        <item quantity="other">%1$s subskrybentów</item>
+    </plurals>
+</resources>
